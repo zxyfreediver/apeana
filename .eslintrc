@@ -1,0 +1,11 @@
+{
+  "extends": ["taro/react"],
+  "rules": {
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "off", // 关闭未使用变量的检查
+    "@typescript-eslint/no-explicit-any": "off", // 关闭对 any 类型的检查
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 关闭显式模块边界类型的检查
+    "@typescript-eslint/no-var-requires": "off" // 关闭对 require 语句的检查
+  }
+}
