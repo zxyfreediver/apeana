@@ -16,11 +16,9 @@ export default function Index () {
   const [key, setKey] = useState(0)
 
   useLoad(() => {
-    // console.log('Page loaded.')
     workflow.current = new Workflow(setStatus);
   })
 
-  console.log(status)
 
   const handleStart = () => {
     // 添加准备步骤
