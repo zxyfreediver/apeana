@@ -1,16 +1,18 @@
 import { View } from '@tarojs/components'
 import { useState } from 'react'
-import { FloatingBubble, Field, Input, Button, Popup, Flex } from '@taroify/core'
+import { FloatingBubble, Field, Input, Button, Popup, Flex, Radio } from '@taroify/core'
 import { SettingOutlined, Plus, Minus} from '@taroify/icons'
 import mock from './mock'
+import { bgmList } from './config'
 
 interface SettingProps {
-  onCustomize: (table: typeof mock.table) => void
+  onCustomize: (table: typeof mock.table, selectedBgm: number) => void
 }
 
 export default function Setting({ onCustomize }: SettingProps) {
   const [showCustomize, setShowCustomize] = useState(false)
   const [customTable, setCustomTable] = useState(mock.table)
+  const [selectedBgm, setSelectedBgm] = useState(1)
 
   const handleCustomize = () => {
     setShowCustomize(true)
@@ -18,7 +20,7 @@ export default function Setting({ onCustomize }: SettingProps) {
 
   const handleSaveCustomize = () => {
     setShowCustomize(false)
-    onCustomize(customTable)
+    onCustomize(customTable, selectedBgm)
   }
 
   const addRound = () => {
@@ -72,6 +74,14 @@ export default function Setting({ onCustomize }: SettingProps) {
               </Flex>
             </View>
           ))}
+          <View className='mb-4'>
+            <View className='text-m mb-2'>背景音乐</View>
+            <Radio.Group value={selectedBgm} onChange={setSelectedBgm}>
+              {bgmList.map((audio) => (
+                <Radio key={audio.id} name={audio.id}>{audio.name}</Radio>
+              ))}
+            </Radio.Group>
+          </View>
           <Flex justify='space-around'>
             <Button onClick={addRound} className='mb-4'>
               <Plus /> 添加新轮次

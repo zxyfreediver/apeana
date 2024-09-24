@@ -5,25 +5,43 @@ import { PlayCircleOutlined, StopCircleOutlined } from '@taroify/icons'
 import { useRef, useState, useMemo, useEffect, useCallback } from 'react'
 import { Workflow, PreparationStep, TrainingStep} from './workflow'
 import Setting from './Setting'
+import { bgmList, audioList } from './config'
 import mock from './mock'
 
 const formatTime = (time: number) => {
   return `${Math.floor(time / 60).toString().padStart(2, '0')}:${Math.floor(time % 60).toString().padStart(2, '0')}`
 }
 
+const countDownAudio = audioList[0].url
+const startHoldAudio = audioList[1].url
+const startBreatheAudio = audioList[2].url
+
 export default function Index () {
   const workflow = useRef<Workflow>()
   const [status, setStatus] = useState({name: '', duration: 0, index: -1, remaining: 0, status: 'pending'})
   const [key, setKey] = useState(0)
   const audioContext = useRef<Taro.InnerAudioContext>()
+  const audioContextCountDown = useRef<Taro.InnerAudioContext>()
+  const audioContextStartHold = useRef<Taro.InnerAudioContext>()
+  const audioContextStartBreathe = useRef<Taro.InnerAudioContext>()
   const [customTable, setCustomTable] = useState(mock.table)
+  const [bgm, setBgm] = useState(1)
+
+  const bgmUrl = useMemo(() => {
+    return bgmList.find(item => item.id === bgm)?.url
+  }, [bgm])
 
   useLoad(() => {
     workflow.current = new Workflow(setStatus);
     // 创建音频上下文
     audioContext.current = Taro.createInnerAudioContext()
-    audioContext.current.src = 'https://6d61-mars-3gja7f8015c2d223-1323367449.tcb.qcloud.la/Della%20-%20%E6%9E%95%E7%9D%80%E6%BA%AA%E6%B0%B4%E5%85%A5%E7%9C%A0.mp3?sign=38e20f0acf749372c481a835cc9ff180&t=1726814097' // 替换为您的音频文件路径
     audioContext.current.loop = true // 设置循环播放
+    audioContextCountDown.current = Taro.createInnerAudioContext()
+    audioContextCountDown.current.src = countDownAudio
+    audioContextStartHold.current = Taro.createInnerAudioContext()
+    audioContextStartHold.current.src = startHoldAudio
+    audioContextStartBreathe.current = Taro.createInnerAudioContext()
+    audioContextStartBreathe.current.src = startBreatheAudio
   })
 
   const handleStart = useCallback(() => {
@@ -39,12 +57,9 @@ export default function Index () {
     audioContext.current?.play() // 开始播放音频
   }, [customTable])
 
-  // const handlePause = () => {
-  //   workflow.current?.pause();
-  // }
-
   const handleResume = () => {
     workflow.current?.resume();
+    audioContext.current?.play() // 开始播放音频
   }
 
   const handleStop = () => {
@@ -52,6 +67,15 @@ export default function Index () {
     setKey(state => ++state)
     audioContext.current?.stop() // 停止播放音频
   }
+
+  const handleCustomize = (newTable, bgm) => {
+    handleStop()
+    setCustomTable(newTable)
+    setBgm(bgm)
+    // 如果需要，可以在这里重置 workflow
+    workflow.current = new Workflow(setStatus);
+  }
+
 
   const controlButton = useMemo(() => {
     if (status.status === 'running') {
@@ -98,16 +122,30 @@ export default function Index () {
   }, [status])
 
   useEffect(() => {
+    if (bgmUrl && audioContext.current) {
+      audioContext.current.src = bgmUrl
+    }
+  }, [bgmUrl])
+
+  useEffect(() => {
     if (status.status === 'pending') {
       audioContext.current?.stop()
     }
   }, [status.status])
 
-  const handleCustomize = (newTable) => {
-    setCustomTable(newTable)
-    // 如果需要，可以在这里重置 workflow
-    workflow.current = new Workflow(setStatus);
-  }
+  useEffect(() => {
+    if (status.duration === status.remaining) {
+      if (status.name === '闭气') {
+        audioContextStartHold.current?.play()
+      }
+      if (status.name === '调息' || status.name === '准备时间') {
+        audioContextStartBreathe.current?.play()
+      }
+    }
+    if (status.remaining === 5) {
+      audioContextCountDown.current?.play()
+    }
+  }, [status])
 
   return (
     <View>
