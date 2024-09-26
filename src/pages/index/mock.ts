@@ -7,11 +7,7 @@ export default {
     },
     {
       hold: 90,
-      breathe: 50
-    },
-    {
-      hold: 90,
-      breathe: 40
+      breathe: 45
     },
     {
       hold: 90,
@@ -19,7 +15,7 @@ export default {
     },
     {
       hold: 90,
-      breathe: 20
+      breathe: 15
     },
     {
       hold: 90,
