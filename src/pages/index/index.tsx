@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components'
-import Taro, { useLoad } from '@tarojs/taro'
+import Taro, { useLoad, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { Cell, Circle } from '@taroify/core'
 import { PlayCircleOutlined, StopCircleOutlined } from '@taroify/icons'
 import { useRef, useState, useMemo, useEffect, useCallback } from 'react'
@@ -42,6 +42,17 @@ export default function Index () {
     audioContextStartHold.current.src = startHoldAudio
     audioContextStartBreathe.current = Taro.createInnerAudioContext()
     audioContextStartBreathe.current.src = startBreatheAudio
+  })
+
+  useShareAppMessage(() => {
+    return {
+      title: '闭气练习',
+      path: '/pages/index/index',
+    }
+  })
+
+  useShareTimeline(() => {
+    console.log('onShareTimeline')
   })
 
   const handleStart = useCallback(() => {
