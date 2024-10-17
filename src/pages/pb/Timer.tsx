@@ -14,9 +14,7 @@ const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElap
       }, 1000);
     } else if (timeLeft === 0) {
       clearInterval(timerRef.current);
-      setTimeout(() => {
-        setIsCounting(true);
-      }, 2000);
+      setIsCounting(true);
     }
 
     return () => clearInterval(timerRef.current);

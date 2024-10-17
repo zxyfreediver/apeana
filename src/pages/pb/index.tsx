@@ -12,7 +12,6 @@ const Index = () => {
   const [finalTime, setFinalTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [maxTime, setMaxTime] = useState(2 * 60);
 
   const handleStart = () => {
     setIsStarted(true);
@@ -36,35 +35,11 @@ const Index = () => {
 
   const timeCount = timeLeft > 0 ? `${timeLeft} 秒` : `${elapsedTime} 秒`;
   const timeText = timeLeft > 0 ? '调息时间' : '闭气';
-
-  const speed = useMemo(() => {
-    if (timeLeft > 0) {
-      return 100 / initialTime
-    }
-    if (elapsedTime === 0) {
-      return 0
-    }
-    return 100 / maxTime
-  }, [elapsedTime, initialTime, maxTime, timeLeft]);
-
-  const percent = useMemo(() => {
-    if (timeLeft > 0) {
-      return (initialTime - timeLeft) / initialTime * 100;
-    }
-    if (elapsedTime === 0) {
-      return 100
-    }
-    return elapsedTime / maxTime * 100;
-  }, [elapsedTime, initialTime, maxTime, timeLeft])
-
   return (
     <View className='h-full'>
-      <View className='flex justify-center items-center relative'>
-        <Circle size={250} speed={speed} percent={percent} layerColor='#000' color='orange' strokeWidth={120} />
-        <View className='absolute flex justify-center items-center flex-col text-2xl'>
-          <View>{timeCount}</View>
-          <View>{timeText}</View>
-        </View>
+      <View className='flex justify-center items-center text-2xl flex-col h-64'>
+        <View>{timeText}</View>
+        <View>{timeCount}</View>
       </View>
       <View className='h-full flex justify-between items-center flex-col'>
         <View className='h-64 pt-10'>
