@@ -3,11 +3,19 @@ export default {
   table: [
     {
       hold: 90,
+      breathe: 70
+    },
+    {
+      hold: 90,
       breathe: 60
     },
     {
       hold: 90,
-      breathe: 45
+      breathe: 50
+    },
+    {
+      hold: 90,
+      breathe: 40
     },
     {
       hold: 90,
@@ -15,7 +23,11 @@ export default {
     },
     {
       hold: 90,
-      breathe: 15
+      breathe: 20
+    },
+    {
+      hold: 90,
+      breathe: 10
     },
     {
       hold: 90,

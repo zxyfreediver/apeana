@@ -35,9 +35,8 @@ export default function Setting({ onCustomize }: SettingProps) {
   return (
     <View>
       <FloatingBubble icon={<SettingOutlined />} onClick={handleCustomize} />
-
-      <Popup open={showCustomize} onClose={() => setShowCustomize(false)} className='h-[80%]' rounded placement='bottom'>
-        <ScrollView scrollY  showScrollbar={false} enhanced enablePassive refresherTwoLevelScrollEnabled>
+      <Popup open={showCustomize} onClose={() => setShowCustomize(false)} className='h-5/6' rounded placement='bottom'>
+        <ScrollView className='h-full' scrollY showScrollbar={false} enhanced enablePassive refresherTwoLevelScrollEnabled>
           <View className='p-4'>
             <View className='text-l mb-4'>自定义设置</View>
               {customTable.map((item, index) => (
@@ -76,7 +75,7 @@ export default function Setting({ onCustomize }: SettingProps) {
                 </View>
               ))}
               <View className='mb-4'>
-                <View className='text-m mb-2'>背景音乐</View>
+                <View className='text-m mb-4'>背景音乐</View>
                 <Radio.Group value={selectedBgm} onChange={setSelectedBgm}>
                   {bgmList.map((audio) => (
                     <Radio key={audio.id} name={audio.id}>{audio.name}</Radio>
@@ -84,10 +83,10 @@ export default function Setting({ onCustomize }: SettingProps) {
                 </Radio.Group>
               </View>
               <Flex justify='space-around'>
-                <Button onClick={addRound} className='mb-4'>
+                <Button onClick={addRound} className='mb-4 w-2/5'>
                   <Plus /> 添加新轮次
                 </Button>
-                <Button color='primary' onClick={handleSaveCustomize}>保存</Button>
+                <Button className='w-2/5' color='primary' onClick={handleSaveCustomize}>保存</Button>
               </Flex>
           </View>
         </ScrollView>

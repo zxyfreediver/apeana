@@ -5,28 +5,29 @@ export default defineAppConfig({
     'pages/practice/index',
     'pages/profile/index'
   ],
-  // tabBar: {
-  //   color: '#333',
-  //   // 暂时不展示 tabbar
-  //   list: [
-  //     {
-  //       pagePath: 'pages/index/index',
-  //       text: '练习',
-  //     },
-  //     {
-  //       pagePath: 'pages/plan/index',
-  //       text: '制定'
-  //     },
-  //     {
-  //       pagePath: 'pages/practice/index',
-  //       text: '挑战PB'
-  //     },
-  //     {
-  //       pagePath: 'pages/profile/index',
-  //       text: '我的'
-  //     }
-  //   ]
-  // },
+  tabBar: {
+    color: '#333',
+    // 暂时不展示 tabbar
+    custom: true,
+    list: [
+      {
+        pagePath: 'pages/index/index',
+        text: '练习',
+      },
+      // {
+      //   pagePath: 'pages/plan/index',
+      //   text: '制定'
+      // },
+      {
+        pagePath: 'pages/pb/index',
+        text: '挑战PB'
+      },
+      // {
+      //   pagePath: 'pages/profile/index',
+      //   text: '我的'
+      // }
+    ]
+  },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
