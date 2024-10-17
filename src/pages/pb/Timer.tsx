@@ -5,7 +5,6 @@ import {StopCircleOutlined} from '@taroify/icons';
 
 const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElapsedTime }) => {
   const [isCounting, setIsCounting] = useState(false);
-  const [goalReached, setGoalReached] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -27,9 +26,6 @@ const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElap
     if (isCounting) {
       timerRef.current = setInterval(() => {
         setElapsedTime(prev => {
-          if (prev + 1 === targetTime) {
-            setGoalReached(true);
-          }
           return prev + 1;
         });
       }, 1000);
@@ -46,7 +42,6 @@ const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElap
 
   return (
     <View>
-      {/* {goalReached && <View>{targetTime} s 目标达成!</View>} */}
       <StopCircleOutlined size={60} onClick={stopTimer} />
     </View>
   );

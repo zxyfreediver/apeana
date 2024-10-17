@@ -41,15 +41,18 @@ const Index = () => {
     if (timeLeft > 0) {
       return 100 / initialTime
     }
-    if (finalTime === 0) {
+    if (elapsedTime === 0) {
       return 0
     }
     return 100 / maxTime
-  }, [finalTime, initialTime, maxTime, timeLeft]);
+  }, [elapsedTime, initialTime, maxTime, timeLeft]);
 
   const percent = useMemo(() => {
     if (timeLeft > 0) {
       return (initialTime - timeLeft) / initialTime * 100;
+    }
+    if (elapsedTime === 0) {
+      return 100
     }
     return elapsedTime / maxTime * 100;
   }, [elapsedTime, initialTime, maxTime, timeLeft])
@@ -57,7 +60,7 @@ const Index = () => {
   return (
     <View className='h-full'>
       <View className='flex justify-center items-center relative'>
-        <Circle key={1} size={250} speed={speed} percent={percent} layerColor='#000' color='orange' strokeWidth={120} />
+        <Circle size={250} speed={speed} percent={percent} layerColor='#000' color='orange' strokeWidth={120} />
         <View className='absolute flex justify-center items-center flex-col text-2xl'>
           <View>{timeCount}</View>
           <View>{timeText}</View>
