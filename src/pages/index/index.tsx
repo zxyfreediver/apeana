@@ -56,17 +56,9 @@ export default function Index () {
   })
 
   const handleStart = useCallback(() => {
-    // 添加准备步骤
-    workflow.current?.addStep(new PreparationStep(mock.prepare));
-    // 添加训练步骤
-    customTable.forEach(item => {
-      workflow.current?.addStep(new TrainingStep('闭气', item.hold));
-      workflow.current?.addStep(new TrainingStep('调息', item.breathe));
-    })
-
     workflow.current?.run();
     audioContext.current?.play() // 开始播放音频
-  }, [customTable])
+  }, [])
 
   const handleResume = () => {
     workflow.current?.resume();
@@ -120,7 +112,7 @@ export default function Index () {
 
   // 根据状态控制表盘速度
   const speed = useMemo(() => {
-    if (status.remaining === status.duration) {
+    if (status.remaining === status.duration || status.status === 'pending') {
       return 0
     }
     return 100 / status.duration
@@ -131,6 +123,16 @@ export default function Index () {
     if (status.status === 'pending') return 0
     return (1 - status.remaining / status.duration) * 100
   }, [status])
+
+  useEffect(() => {
+    // 添加准备步骤
+    workflow.current?.addStep(new PreparationStep(mock.prepare));
+    // 添加训练步骤
+    customTable.forEach(item => {
+      workflow.current?.addStep(new TrainingStep('闭气', item.hold));
+      workflow.current?.addStep(new TrainingStep('调息', item.breathe));
+    })
+  }, [customTable])
 
   useEffect(() => {
     if (bgmUrl && audioContext.current) {

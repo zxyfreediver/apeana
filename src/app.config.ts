@@ -1,14 +1,12 @@
 export default defineAppConfig({
   pages: [
+    'pages/pb/index',
     'pages/index/index',
     'pages/plan/index',
-    'pages/practice/index',
     'pages/profile/index'
   ],
   tabBar: {
     color: '#333',
-    // 暂时不展示 tabbar
-    custom: true,
     list: [
       {
         pagePath: 'pages/index/index',
