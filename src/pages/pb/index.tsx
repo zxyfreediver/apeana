@@ -4,7 +4,7 @@ import { Input, View } from '@tarojs/components';
 import { Flex, Button, FloatingBubble, Popup, Field, Radio } from '@taroify/core'
 import { PlayCircleOutlined, Replay, Share, SettingOutlined } from '@taroify/icons'
 import Timer from './Timer';
-import { useShareAppMessage, switchTab, createInnerAudioContext } from '@tarojs/taro'
+import Taro, { useShareAppMessage, switchTab, createInnerAudioContext, useShareTimeline } from '@tarojs/taro'
 import { audioList, bgmList } from '../index/config'
 
 const breatheSoundObj = audioList.find(item => item.id === 5)
@@ -51,6 +51,11 @@ const Index = () => {
     }
   })
 
+  useShareTimeline(() => {
+    console.log('onShareTimeline')
+  })
+
+
   const handleStart = () => {
     setIsStarted(true);
     if (startAudio) {
@@ -89,11 +94,6 @@ const Index = () => {
   const timeCount = timeLeft > 0 ? `${timeLeft} 秒` : `${elapsedTime} 秒`;
   const timeText = timeLeft > 0 ? '调息时间' : '闭气时间';
 
-  const handleShare = () => {
-    // 微信小程序会自动调用分享，这里可以添加一些额外的逻辑
-    console.log('用户点击了分享按钮');
-  }
-
   const handleGoToPractice = () => {
     switchTab({
       url: '/pages/index/index'
@@ -110,21 +110,16 @@ const Index = () => {
 
   const handleInitialTimeChange = (value) => {
     const newValue = parseInt(value) || 0;
-    if (!isNaN(newValue)) {
-      setInitialTime(newValue);
-      setTimeLeft(newValue); // 添加这一行
-    }
+    setInitialTime(newValue);
+    setTimeLeft(newValue); // 添加这一行
   }
 
   const handleTargetTimeChange = (value) => {
-    const newValue = parseInt(value.name) || 0;
-    if (!isNaN(newValue)) {
-      setTargetTime(newValue);
-    }
+    const newValue = parseInt(value) || 0;
+    setTargetTime(newValue);
   }
 
   const handleBgmChange = (value) => {
-    console.log(value)
     const newIndex = parseInt(value);
     setCurrentBgmIndex(newIndex);
     if (bgmAudio) {
@@ -154,7 +149,7 @@ const Index = () => {
                 <View>恭喜你，闭气挑战成功！</View>
                 <View className='mt-4'>
                   <Button
-                    onClick={handleShare}
+                    openType='share'
                     color="primary"
                     shape="round"
                     size="large"
