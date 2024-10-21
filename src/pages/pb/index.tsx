@@ -4,7 +4,7 @@ import { Input, View } from '@tarojs/components';
 import { Flex, Button, FloatingBubble, Popup, Field, Radio } from '@taroify/core'
 import { PlayCircleOutlined, Replay, Share, SettingOutlined } from '@taroify/icons'
 import Timer from './Timer';
-import Taro, { useShareAppMessage, switchTab, createInnerAudioContext, useShareTimeline } from '@tarojs/taro'
+import { useShareAppMessage, switchTab, createInnerAudioContext, useShareTimeline, setKeepScreenOn } from '@tarojs/taro'
 import { audioList, bgmList } from '../index/config'
 
 const breatheSoundObj = audioList.find(item => item.id === 5)
@@ -24,6 +24,17 @@ const Index = () => {
   const [currentBgmIndex, setCurrentBgmIndex] = useState(0);
 
   useEffect(() => {
+    // 设置屏幕常亮
+    setKeepScreenOn({
+      keepScreenOn: true,
+      success: function() {
+        console.log('设置屏幕常亮成功');
+      },
+      fail: function(err) {
+        console.error('设置屏幕常亮失败:', err);
+      }
+    });
+
     const startSound = createInnerAudioContext();
     startSound.src = startSoundObj.url; // 请确保这个路径是正确的
     setStartAudio(startSound);
@@ -38,6 +49,10 @@ const Index = () => {
     setBgmAudio(bgm);
 
     return () => {
+      // 组件卸载时关闭屏幕常亮
+      setKeepScreenOn({
+        keepScreenOn: false
+      });
       startSound.destroy();
       breatheSound.destroy();
       bgm.destroy();
@@ -72,9 +87,6 @@ const Index = () => {
     } else {
       setFinalTime(time);
       setIsStarted(false);
-      if (breatheAudio) {
-        breatheAudio.play();
-      }
       if (bgmAudio) {
         bgmAudio.stop(); // 停止播放背景音乐
       }
@@ -184,7 +196,7 @@ const Index = () => {
               {finalTime ? <Replay size={60} onClick={handleReset} /> : <PlayCircleOutlined size={60} onClick={handleStart} />}
             </Flex>
             ) : (
-              <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} elapsedTime={elapsedTime}
+              <Timer timeLeft={timeLeft} setTimeLeft={setTimeLeft} breatheAudio={breatheAudio} elapsedTime={elapsedTime}
                 setElapsedTime={setElapsedTime} targetTime={targetTime} onStop={handleStop}
               />
           )}

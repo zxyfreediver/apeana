@@ -28,7 +28,7 @@ export class Step {
 
       await runStep();
       // 等待一段时间, 动画
-      await new Promise(resolve => setTimeout(() => resolve(), 300));
+      // await new Promise(resolve => setTimeout(() => resolve(), 1000));
   }
 
   pause(setStatus) {

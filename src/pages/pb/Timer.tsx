@@ -2,16 +2,30 @@
 import { useState, useEffect, useRef } from 'react';
 import { View } from '@tarojs/components';
 import {StopCircleOutlined} from '@taroify/icons';
+import { createInnerAudioContext } from '@tarojs/taro'
+import { audioList } from '../index/config'
 
-const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElapsedTime }) => {
+const countDownSoundObj = audioList.find(item => item.id === 4)
+
+const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElapsedTime, breatheAudio }) => {
   const [isCounting, setIsCounting] = useState(false);
   const timerRef = useRef(null);
+  const [countDownAudio, setCountDownAudio] = useState(null);
+
+  useEffect(() => {
+    const countDownSound = createInnerAudioContext();
+    countDownSound.src = countDownSoundObj.url;
+    setCountDownAudio(countDownSound);
+  }, [])
 
   useEffect(() => {
     if (timeLeft > 0) {
       timerRef.current = setInterval(() => {
         setTimeLeft(prev => prev - 1);
       }, 1000);
+      if (timeLeft === 5 && countDownAudio) {
+        countDownAudio.play();
+      }
     } else if (timeLeft === 0) {
       clearInterval(timerRef.current);
       setIsCounting(true);
@@ -22,6 +36,9 @@ const Timer = ({ targetTime, onStop, setTimeLeft, timeLeft, elapsedTime, setElap
 
   useEffect(() => {
     if (isCounting) {
+      if (breatheAudio) {
+        breatheAudio.play();
+      }
       timerRef.current = setInterval(() => {
         setElapsedTime(prev => {
           return prev + 1;

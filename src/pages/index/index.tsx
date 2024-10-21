@@ -42,6 +42,11 @@ export default function Index () {
     audioContextStartHold.current.src = startHoldAudio
     audioContextStartBreathe.current = Taro.createInnerAudioContext()
     audioContextStartBreathe.current.src = startBreatheAudio
+
+    // 设置屏幕常亮
+    Taro.setKeepScreenOn({
+      keepScreenOn: true
+    })
   })
 
   useShareAppMessage(() => {
@@ -163,7 +168,7 @@ export default function Index () {
   return (
     <View>
       <View className='flex justify-center items-center relative'>
-        <Circle key={key} size={250} speed={speed} percent={percent} layerColor='#000' color='orange' strokeWidth={120} />
+        <Circle key={key} size={250} speed={0} percent={percent} layerColor='#000' color='orange' strokeWidth={120} />
         <View className='absolute flex justify-center items-center flex-col'>
           {texts}
         </View>

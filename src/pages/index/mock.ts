@@ -36,12 +36,16 @@ export default {
   ]
   // table: [
   //   {
-  //     hold: 5,
-  //     breathe: 5
+  //     hold: 15,
+  //     breathe: 10
   //   },
   //   {
-  //     hold: 3,
-  //     breathe: 0
+  //     hold: 13,
+  //     breathe: 10
+  //   },
+  //   {
+  //     hold: 11,
+  //     breathe: 10
   //   },
   // ]
 }
